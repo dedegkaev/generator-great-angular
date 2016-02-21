@@ -1,3 +1,4 @@
+
 # generator-great-angular [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url] [![Coverage percentage][coveralls-image]][coveralls-url]
 > Angular great enterprise project based on Angular Best Practices
 
@@ -33,3 +34,6 @@ Yeoman has a heart of gold. He&#39;s a person with feelings and opinions, but he
 [daviddm-url]: https://david-dm.org/dedegkaev/generator-great-angular
 [coveralls-image]: https://coveralls.io/repos/dedegkaev/generator-great-angular/badge.svg
 [coveralls-url]: https://coveralls.io/r/dedegkaev/generator-great-angular
+
+# generator-great-angular
+Yeoman Angular great enterprise project generator based on Angular Best Practices
