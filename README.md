@@ -1,5 +1,5 @@
 
-# generator-great-angular [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url] [![Coverage percentage][coveralls-image]][coveralls-url]
+# generator-great-angular [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url] [![Coverage Status](https://coveralls.io/repos/github/dedegkaev/generator-great-angular/badge.svg?branch=master)](https://coveralls.io/github/dedegkaev/generator-great-angular)
 > Angular great enterprise project based on Angular Best Practices
 
 ## Installation
