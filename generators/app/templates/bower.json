@@ -1,0 +1,22 @@
+{
+  "name": "<%= appname %>",
+  "version": "0.0.0",
+  "main": "index.html",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components"
+  ],
+  "dependencies": {
+    "angular": "~1.5",
+    "angular-animate": "~1.5",
+    "angular-cookies": "~1.5",
+    "angular-mocks": "~1.5",
+    <%- router %>,
+    <%- requestsService %>,
+    "angular-bootstrap": "~1.1",
+    "underscore": "latest",
+    "bootstrap": "~3.1",
+    "less.js": "~1.6"
+  }
+}

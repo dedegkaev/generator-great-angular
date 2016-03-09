@@ -1,40 +1,135 @@
 'use strict';
+
 var yeoman = require('yeoman-generator');
+var util = require('util');
 var chalk = require('chalk');
 var yosay = require('yosay');
+var path = require('path');
+var _ = require('underscore.string');
 
-module.exports = yeoman.generators.Base.extend({
-  prompting: function () {
-    var done = this.async();
 
-    // Have Yeoman greet the user.
-    this.log(yosay(
-      'Welcome to the groundbreaking ' + chalk.red('generator-great-angular') + ' generator!'
-    ));
+module.exports = yeoman.Base.extend({
+	prompting: function() {
+		var done = this.async();
 
-    var prompts = [{
-      type: 'confirm',
-      name: 'someOption',
-      message: 'Would you like to enable this option?',
-      default: true
-    }];
+		// Have Yeoman greet the user.
+		this.log(yosay(
+			'Welcome to the groundbreaking ' + chalk.red('generator-great-angular') + ' generator!'
+		));
 
-    this.prompt(prompts, function (props) {
-      this.props = props;
-      // To access props later use this.props.someOption;
+		var prompts = [
+			{
+				name: 'appname',
+				type: 'input',
+        		message: 'Your project name',
+        		default: path.basename(process.cwd())
+			},
+			{
+		        name: 'router',
+		        type: 'list',
+		        message: 'Which router would you like to use?',
+		        default: 0,
+		        choices: ['Standard Angular Router','Angular UI Router']
+	    	},
+			{
+		        name: 'requestsService',
+		        type: 'list',
+		        message: 'Which requests service would you like to use?',
+		        default: 0,
+		        choices: ['Restangular','Angular Resource']
+	    	}
 
-      done();
-    }.bind(this));
-  },
+		];
 
-  writing: function () {
-    this.fs.copy(
-      this.templatePath('dummyfile.txt'),
-      this.destinationPath('dummyfile.txt')
-    );
-  },
 
-  install: function () {
-    this.installDependencies();
-  }
+		this.prompt(prompts, function (props) {
+			this.appname = props.appname;
+
+			// Router
+			if (props.router === 'Angular UI Router') {
+	            this.uirouter = true;
+	            this.routerJs = 'bower_components/angular-ui-router/release/angular-ui-router.js';
+	            this.routerModuleName = 'ui.router';
+	            this.routerViewDirective = 'ui-view';
+				this.config.set('routerName', this.routerModuleName);
+	        }
+			else {
+	            this.uirouter = false;
+	            this.routerJs = 'bower_components/angular-route/angular-route.js';
+	            this.routerModuleName = 'ngRoute';
+	            this.routerViewDirective = 'ng-view';
+				this.config.set('routerName', this.routerModuleName);
+	        }
+
+			// Request client
+			if (props.requestsService === 'Restangular') {
+	            this.restangular = true;
+				this.requestsServiceJs = 'bower_components/restangular/src/restangular.js';
+	            this.requestsServiceModuleName = 'restangular';
+
+	        }
+			else {
+	            this.restangular = false;
+				this.requestsServiceJs = 'bower_components/angular-resource/angular-resource.js';
+	            this.requestsServiceModuleName = 'ngResource';
+	        }
+
+			//
+	        done();
+	    }.bind(this));
+	},
+	configuring: function () {
+		this.config.set('uirouter', this.uirouter);
+		this.config.set('requestsService', this.requestsService);
+		this.config.set('partsDir','parts/');
+        this.config.set('serviceDir','services/');
+        this.config.set('directiveDir','directives/');
+        this.config.set('filterDir','filters/');
+		this.config.set('modalDir','modals/');
+		this.config.save();
+	},
+	writing: {
+		index: function(){
+			this.fs.copyTpl(
+				this.templatePath('index.html'),
+				this.destinationPath('app/index.html'), {
+					appname: _.camelize(this.appname),
+					routerJs: this.routerJs,
+					routerViewDirective: this.routerViewDirective,
+					requestsServiceJs: this.requestsServiceJs
+				}
+			);
+		},
+		app: function(){
+			this.fs.copyTpl(
+				this.templatePath('app.js'),
+				this.destinationPath('app/app.js'), {
+					appname: _.camelize(this.appname),
+					routerModuleName: this.routerModuleName,
+					uirouter: this.uirouter
+				}
+			);
+		},
+		appless: function(){
+			this.fs.copyTpl(
+				this.templatePath('app.less'),
+				this.destinationPath('app/app.less')
+			);
+		},
+		bower: function(){
+			this.fs.copyTpl(
+				this.templatePath('bower.json'),
+				this.destinationPath('bower.json'), {
+					appname: _.camelize(this.appname),
+					router: this.uirouter? '"angular-ui-router":"0.2.18"': '"angular-route":"~1.5"',
+					requestsService: this.requestsService? '"angular-resource": "~1.5"' : '"restangular": "~1.5"'
+				}
+			);
+		},
+
+	},
+
+	install: function() {
+		this.installDependencies({ skipInstall: this.options['skip-install'] });
+	}
 });
