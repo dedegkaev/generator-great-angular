@@ -88,15 +88,15 @@ module.exports = yeoman.Base.extend({
 
         	helpers.rewriteFile.call(this, appjsConfig);
 
-            var applessConfig = {
-                file: 'app.less',
+            var appSassConfig = {
+                file: 'app.scss',
                 path: 'app/',
-                needle: 'Add Component LESS Above',
+                needle: 'Add Component SASS Above',
                 snippet: [
-                    '@import "parts/'+this.partName+'/'+this.partName+'.less";'
+                    '@import "parts/'+this.partName+'/'+this.partName+'.scss";'
                 ]
             };
-        	helpers.rewriteFile.call(this, applessConfig);
+        	helpers.rewriteFile.call(this, appSassConfig);
         }
 	},
 

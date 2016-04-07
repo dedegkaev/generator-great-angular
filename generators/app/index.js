@@ -51,14 +51,12 @@ module.exports = yeoman.Base.extend({
 	            this.routerJs = 'bower_components/angular-ui-router/release/angular-ui-router.js';
 	            this.routerModuleName = 'ui.router';
 	            this.routerViewDirective = 'ui-view';
-				this.config.set('routerName', this.routerModuleName);
 	        }
 			else {
 	            this.uirouter = false;
 	            this.routerJs = 'bower_components/angular-route/angular-route.js';
 	            this.routerModuleName = 'ngRoute';
 	            this.routerViewDirective = 'ng-view';
-				this.config.set('routerName', this.routerModuleName);
 	        }
 
 			// Request client
@@ -80,6 +78,7 @@ module.exports = yeoman.Base.extend({
 	},
 	configuring: function () {
 		this.config.set('uirouter', this.uirouter);
+		this.config.set('routerName', this.routerModuleName);
 		this.config.set('requestsService', this.requestsService);
 		this.config.set('partsDir','parts/');
         this.config.set('serviceDir','services/');
@@ -126,6 +125,22 @@ module.exports = yeoman.Base.extend({
 				}
 			);
 		},
+		packagejs: function(){
+			this.fs.copyTpl(
+				this.templatePath('package.json'),
+				this.destinationPath('package.json'), {
+					appname: _.camelize(this.appname)
+				}
+			);
+		},
+		gulpfile: function(){
+			this.fs.copyTpl(
+				this.templatePath('gulpfile.js'),
+				this.destinationPath('gulpfile.js'), {
+					appname: _.camelize(this.appname)
+				}
+			);
+		}
 
 	},
 
