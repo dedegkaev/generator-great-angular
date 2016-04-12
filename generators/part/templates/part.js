@@ -1,5 +1,3 @@
-'use strict';
-
 /**
  * @ngdoc function
  * @name controller <%= ctrlname %>
@@ -7,6 +5,7 @@
  *
  */
 angular.module('<%= appname %>').controller('<%= ctrlname %>', function($scope){
+    'use strict';
     var vm = this;
 
 });
