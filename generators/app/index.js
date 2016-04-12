@@ -62,7 +62,7 @@ module.exports = yeoman.Base.extend({
 			// Request client
 			if (props.requestsService === 'Restangular') {
 	            this.restangular = true;
-				this.requestsServiceJs = 'bower_components/restangular/src/restangular.js';
+				this.requestsServiceJs = 'bower_components/restangular/dist/restangular.js';
 	            this.requestsServiceModuleName = 'restangular';
 
 	        }
@@ -105,7 +105,8 @@ module.exports = yeoman.Base.extend({
 				this.destinationPath('app/app.js'), {
 					appname: _.camelize(this.appname),
 					routerModuleName: this.routerModuleName,
-					uirouter: this.uirouter
+					uirouter: this.uirouter,
+					requestsSvcName: this.requestsServiceModuleName
 				}
 			);
 		},
@@ -120,8 +121,8 @@ module.exports = yeoman.Base.extend({
 				this.templatePath('bower.json'),
 				this.destinationPath('bower.json'), {
 					appname: _.camelize(this.appname),
-					router: this.uirouter? '"angular-ui-router":"0.2.18"': '"angular-route":"~1.5"',
-					requestsService: this.requestsService? '"angular-resource": "~1.5"' : '"restangular": "~1.5"'
+					router: this.uirouter ? '"angular-ui-router":"0.2.18"': '"angular-route":"~1.5"',
+					requestsService: this.restangular ? '"restangular": "~1.5"' : '"angular-resource": "~1.5"',
 				}
 			);
 		},
