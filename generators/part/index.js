@@ -72,31 +72,62 @@ module.exports = yeoman.Base.extend({
 			);
 		},
         filesUpdate: function(){
-            var appjsConfig = {
-                file: 'app.js',
-                path: 'app/',
-                needle: 'otherwise',
-                snippet: [
+            var isUiRouter = this.config.get('uirouter');
+            var routerConfig = [];
+            if (isUiRouter) {
+                routerConfig = [
                     "$stateProvider.state('"+this.partName+"', {",
                     "    url: '"+this.route+"',",
                     "    templateUrl: 'parts/"+this.partName+'/'+ this.partName + ".html',",
                     "    controller: '" + _.camelize(_.classify(this.partName)) + "Ctrl',",
                     "    controllerAs: 'vm' ",
                     "});"
-                ]
+                ];
+            }
+            else {
+                routerConfig = [
+                    "$routeProvider.when('"+this.route+"', {",
+                    "    templateUrl: 'parts/"+this.partName+'/'+ this.partName + ".html',",
+                    "    controller: '" + _.camelize(_.classify(this.partName)) + "Ctrl',",
+                    "});"
+                ];
+            }
+            var appjsConfig = {
+                file: 'app.js',
+                path: 'app/',
+                needle: 'otherwise',
+                snippet: routerConfig
             };
-
+            /**
+             * Add to app.js file new part settings
+             */
         	helpers.rewriteFile.call(this, appjsConfig);
 
-            var appSassConfig = {
-                file: 'app.scss',
+            var appLessConfig = {
+                file: 'app.less',
                 path: 'app/',
-                needle: 'Add Component SASS Above',
+                needle: 'Add Component LESS Above',
                 snippet: [
-                    '@import "parts/'+this.partName+'/'+this.partName+'.scss";'
+                    '@import "parts/'+this.partName+'/'+this.partName+'.less";'
                 ]
             };
-        	helpers.rewriteFile.call(this, appSassConfig);
+            /**
+             * Add a new part style file to  app.less
+             */
+        	helpers.rewriteFile.call(this, appLessConfig);
+
+            var indexConfig = {
+                file: 'index.html',
+                path: 'app/',
+                needle: 'Add New Component JS Above',
+                snippet: [
+                    '<script src="parts/'+this.partName+'/'+this.partName+'.js"></script>'
+                ]
+            };
+            /**
+             * Add a new part JS file to index.html
+             */
+        	helpers.rewriteFile.call(this, indexConfig);
         }
 	},
 
